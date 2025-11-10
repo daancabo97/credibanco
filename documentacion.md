@@ -108,3 +108,9 @@ http://localhost:8083/swagger-ui/index.html#/
 *   **`GET /api/transacciones`**
 
     Permite consultar todas las transacciones (recargas, compras, anulaciones) asociadas a las tarjetas del cliente, mostrando detalles y estados.
+
+## 🧪 Pruebas automatizadas
+    
+*   ** `ARCHIVO DE CONFIGURACION DE LA CONEXION BASE DE DATOS POSTGRESQL` **   
+
+    CredibancoBackend\src\main\resources\application.properties
