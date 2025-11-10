@@ -33,11 +33,12 @@ public class TarjetaServiceImpl implements TarjetaService {
 
     @Override
     @Transactional
-    public void recargarSaldo(Long tarjetaId, BigDecimal monto) {
+    public Tarjeta recargarSaldo(Long tarjetaId, BigDecimal monto) {
         Tarjeta tarjeta = tarjetaRepository.findById(tarjetaId)
                 .orElseThrow(() -> new IllegalArgumentException("Tarjeta no encontrada"));
         tarjeta.setSaldo(tarjeta.getSaldo().add(monto));
         tarjetaRepository.save(tarjeta);
+        return tarjeta;
     }
 
     @Override

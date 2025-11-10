@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface TarjetaService {
     Tarjeta crearTarjeta(Tarjeta tarjeta);
-    void recargarSaldo(Long tarjetaId, BigDecimal monto);
+    Tarjeta recargarSaldo(Long tarjetaId, BigDecimal monto);
     List<Tarjeta> listarTarjetas();
 }
