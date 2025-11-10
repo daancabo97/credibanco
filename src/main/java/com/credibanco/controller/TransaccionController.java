@@ -9,8 +9,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/transacciones")
 public class TransaccionController {
+
     private final TransaccionService transaccionService;
-    public TransaccionController(TransaccionService transaccionService) { this.transaccionService = transaccionService; }
+
+    public TransaccionController(TransaccionService transaccionService) {
+        this.transaccionService = transaccionService;
+    }
 
     @PostMapping("/compra")
     public Transaccion registrarCompra(@RequestParam Long tarjetaId, @RequestParam BigDecimal monto) {
