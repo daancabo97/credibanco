@@ -44,7 +44,11 @@ Thumbs.db
 # Archivos de compilación
 target/
 build/
-*.class
+reports/
+htmlReport/*
+htmlReport/**/*
+
+
 
 # Archivos de configuración de IDE
 .idea/

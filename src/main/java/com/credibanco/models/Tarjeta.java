@@ -14,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "tarjeta")
 public class Tarjeta {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,10 +35,8 @@ public class Tarjeta {
     private String tipoTarjeta;
 
     @Column(name = "saldo", nullable = false)
-    private BigDecimal saldo;
+    private BigDecimal saldo = BigDecimal.ZERO;
 
     @OneToMany(mappedBy = "tarjeta")
     private List<Transaccion> transacciones;
-
-    // Getters y setters
 }
