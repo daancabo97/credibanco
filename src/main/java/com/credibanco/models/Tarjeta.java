@@ -1,5 +1,6 @@
 package com.credibanco.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import jakarta.persistence.*;
@@ -38,5 +39,6 @@ public class Tarjeta {
     private BigDecimal saldo = BigDecimal.ZERO;
 
     @OneToMany(mappedBy = "tarjeta")
+    @JsonManagedReference
     private List<Transaccion> transacciones;
 }

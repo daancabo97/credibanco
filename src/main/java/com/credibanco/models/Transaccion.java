@@ -1,5 +1,6 @@
 package com.credibanco.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
@@ -16,6 +17,8 @@ public class Transaccion {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name="tarjeta_id")
+    @JsonBackReference
     @JoinColumn(name = "tarjeta_id", nullable = false)
     private Tarjeta tarjeta;
 
