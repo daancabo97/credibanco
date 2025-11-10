@@ -47,6 +47,8 @@ public class TransaccionControllerTest {
         """;
 
         mockMvc.perform(post("/api/transacciones/compra")
+                        .param("tarjetaId", "1")
+                        .param("monto", "100")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
