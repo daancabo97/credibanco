@@ -17,9 +17,8 @@ public class Transaccion {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="tarjeta_id")
-    @JsonBackReference
     @JoinColumn(name = "tarjeta_id", nullable = false)
+    @JsonBackReference
     private Tarjeta tarjeta;
 
     @Column(name = "monto", nullable = false)
