@@ -93,7 +93,7 @@ http://localhost:8083/swagger-ui/index.html#/
 
 ### Transacciones
 
-*   **`POST /api/transacciones/recarga`**
+*   **`POST /transacciones/recarga`**
 
     Al recargar una tarjeta, se genera una transacción de tipo `recarga` para dejar registro de la operación.
 

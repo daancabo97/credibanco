@@ -1,14 +1,17 @@
 package com.credibanco.service;
 
 import com.credibanco.models.Tarjeta;
+import com.credibanco.models.Transaccion;
 import com.credibanco.repository.TarjetaRepository;
 import com.credibanco.dto.TarjetaRequest;
+import com.credibanco.repository.TransaccionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,6 +19,7 @@ import java.util.List;
 public class TarjetaServiceImpl implements TarjetaService {
 
     private final TarjetaRepository tarjetaRepository;
+    private final TransaccionRepository transaccionRepository;
 
     @Override
     public Tarjeta crearTarjeta(TarjetaRequest tarjetaRequest) {
@@ -47,8 +51,18 @@ public class TarjetaServiceImpl implements TarjetaService {
     public Tarjeta recargarSaldo(Long tarjetaId, BigDecimal monto) {
         Tarjeta tarjeta = tarjetaRepository.findById(tarjetaId)
                 .orElseThrow(() -> new IllegalArgumentException("Tarjeta no encontrada"));
+
         tarjeta.setSaldo(tarjeta.getSaldo().add(monto));
         tarjetaRepository.save(tarjeta);
+
+        Transaccion tx = new Transaccion();
+        tx.setTarjeta(tarjeta);
+        tx.setMonto(monto);
+        tx.setFecha(LocalDateTime.now());
+        tx.setTipoMovimiento("recarga");
+        tx.setEstado("exitosa");
+        transaccionRepository.save(tx);
+
         return tarjeta;
     }
 
