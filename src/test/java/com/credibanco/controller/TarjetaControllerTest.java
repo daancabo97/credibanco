@@ -1,6 +1,7 @@
 package com.credibanco.controller;
 
 import com.credibanco.service.TarjetaService;
+import com.credibanco.dto.TarjetaRequest;
 import com.credibanco.models.Tarjeta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ public class TarjetaControllerTest {
         Tarjeta resp = new Tarjeta();
         resp.setId(1L);
 
-        Mockito.when(tarjetaService.crearTarjeta(any(Tarjeta.class))).thenReturn(resp);
+        Mockito.when(tarjetaService.crearTarjeta(any(TarjetaRequest.class))).thenReturn(resp);
 
         String json = """
         {

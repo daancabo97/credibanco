@@ -23,7 +23,7 @@ public class TarjetaServiceTest {
         tarjeta.setNumeroTarjeta("1234567890123456");
         tarjeta.setNombreTitular("Daniel Caicedo");
         tarjeta.setFechaCreacion(LocalDate.now());
-        tarjeta.setFechaVencimiento("112028");
+        tarjeta.setFechaVencimiento(LocalDate.of(2058, 11, 1));
         tarjeta.setTipoTarjeta("credito");
         // saldo NO se asigna, ya que la clase lo inicializa en cero
 
@@ -41,7 +41,7 @@ public class TarjetaServiceTest {
         tarjeta.setNumeroTarjeta("5555123412341234");
         tarjeta.setNombreTitular("Maria Garcia");
         tarjeta.setFechaCreacion(LocalDate.now());
-        tarjeta.setFechaVencimiento("112028");
+        tarjeta.setFechaVencimiento(LocalDate.of(2058, 11, 1));
         tarjeta.setTipoTarjeta("debito");
 
         Tarjeta saved = tarjetaRepository.save(tarjeta);

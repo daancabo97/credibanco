@@ -1,5 +1,6 @@
 package com.credibanco.controller;
 
+import com.credibanco.dto.TarjetaRequest;
 import com.credibanco.models.Tarjeta;
 import com.credibanco.service.TarjetaService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,8 +28,9 @@ public class TarjetaController {
             @ApiResponse(responseCode = "200", description = "Tarjeta creada exitosamente"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
-    public Tarjeta crearTarjeta(@RequestBody Tarjeta tarjeta) {
-        return tarjetaService.crearTarjeta(tarjeta); }
+    public Tarjeta crearTarjeta(@RequestBody TarjetaRequest tarjetaRequest) {
+        return tarjetaService.crearTarjeta(tarjetaRequest);
+    }
 
 
     @PutMapping("/{id}/recargar")

@@ -2,6 +2,7 @@ package com.credibanco.service;
 
 import com.credibanco.models.Tarjeta;
 import com.credibanco.repository.TarjetaRepository;
+import com.credibanco.dto.TarjetaRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,14 +18,24 @@ public class TarjetaServiceImpl implements TarjetaService {
     private final TarjetaRepository tarjetaRepository;
 
     @Override
-    public Tarjeta crearTarjeta(Tarjeta tarjeta) {
+    public Tarjeta crearTarjeta(TarjetaRequest tarjetaRequest) {
+
+
+        Tarjeta tarjeta = new Tarjeta();
+
+        tarjeta.setNumeroTarjeta(tarjetaRequest.getNumeroTarjeta());
+        tarjeta.setNombreTitular(tarjetaRequest.getNombreTitular());
+        tarjeta.setFechaCreacion(tarjetaRequest.getFechaCreacion());
+        tarjeta.setFechaVencimiento(tarjetaRequest.getFechaVencimiento());
+        tarjeta.setTipoTarjeta(tarjetaRequest.getTipoTarjeta());
+
         // Regla: número de 16 dígitos
         if (tarjeta.getNumeroTarjeta() == null || tarjeta.getNumeroTarjeta().length() != 16) {
             throw new IllegalArgumentException("El número de tarjeta debe tener 16 dígitos");
         }
         // Regla: fecha vencimiento >= fecha creación + 3 años (validación opcional)
         if (tarjeta.getFechaVencimiento() == null ||
-                Integer.parseInt(tarjeta.getFechaVencimiento().substring(2)) < LocalDate.now().getYear() + 3) {
+                tarjeta.getFechaVencimiento().getYear() < LocalDate.now().getYear() + 3) {
             throw new IllegalArgumentException("La fecha de vencimiento debe ser al menos 3 años superior a la de creación");
         }
         tarjeta.setSaldo(BigDecimal.ZERO);

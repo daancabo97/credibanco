@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "tarjeta")
 public class Tarjeta {
@@ -29,8 +30,8 @@ public class Tarjeta {
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDate fechaCreacion;
 
-    @Column(name = "fecha_vencimiento", length = 6, nullable = false)
-    private String fechaVencimiento;
+    @Column(name = "fecha_vencimiento", nullable = false)
+    private LocalDate fechaVencimiento;
 
     @Column(name = "tipo_tarjeta", length = 10, nullable = false)
     private String tipoTarjeta;
