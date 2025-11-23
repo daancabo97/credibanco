@@ -1,0 +1,63 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-warning text-dark">
+          <h4 class="mb-0">Crear Nueva Transacción</h4>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="guardar()" #form="ngForm">
+            <div class="mb-3">
+              <label for="tarjetaId" class="form-label">ID de Tarjeta</label>
+              <input
+                [(ngModel)]="tx.tarjetaId"
+                name="tarjetaId"
+                id="tarjetaId"
+                class="form-control"
+                placeholder="Ingrese el ID de la tarjeta"
+                type="number"
+                required
+                #tarjetaId="ngModel">
+              <div *ngIf="tarjetaId.invalid && tarjetaId.touched" class="text-danger">
+                El ID de tarjeta es requerido.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="monto" class="form-label">Monto</label>
+              <input
+                [(ngModel)]="tx.monto"
+                name="monto"
+                id="monto"
+                class="form-control"
+                placeholder="Ingrese el monto"
+                type="number"
+                step="0.01"
+                required
+                #monto="ngModel">
+              <div *ngIf="monto.invalid && monto.touched" class="text-danger">
+                El monto es requerido.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="descripcion" class="form-label">Descripción</label>
+              <input
+                [(ngModel)]="tx.descripcion"
+                name="descripcion"
+                id="descripcion"
+                class="form-control"
+                placeholder="Ingrese la descripción"
+                required
+                #descripcion="ngModel">
+              <div *ngIf="descripcion.invalid && descripcion.touched" class="text-danger">
+                La descripción es requerida.
+              </div>
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-warning btn-lg" [disabled]="form.invalid">Guardar Transacción</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

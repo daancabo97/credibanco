@@ -32,14 +32,10 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -72,7 +68,8 @@
               "buildTarget": "credibanco-frontend:build:production"
             },
             "development": {
-              "buildTarget": "credibanco-frontend:build:development"
+              "buildTarget": "credibanco-frontend:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

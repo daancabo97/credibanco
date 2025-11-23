@@ -1,0 +1,69 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0">Crear Nueva Tarjeta</h4>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="guardar()" #form="ngForm">
+            <div class="mb-3">
+              <label for="numero" class="form-label">Número de Tarjeta</label>
+              <div class="input-group">
+                <input
+                  [(ngModel)]="tarjeta.numero"
+                  name="numero"
+                  id="numero"
+                  class="form-control"
+                  placeholder="Ingrese el número de tarjeta (16 dígitos)"
+                  maxlength="16"
+                  minlength="16"
+                  pattern="^\d{16}$"
+                  required
+                  #numero="ngModel">
+                <button class="btn btn-outline-secondary" type="button" (click)="generarNumero()">Generar</button>
+              </div>
+              <div *ngIf="numero.invalid && numero.touched" class="text-danger">
+                El número debe tener exactamente 16 dígitos.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="titular" class="form-label">Titular</label>
+              <input
+                [(ngModel)]="tarjeta.titular"
+                name="titular"
+                id="titular"
+                class="form-control"
+                placeholder="Ingrese el nombre del titular"
+                required
+                #titular="ngModel">
+              <div *ngIf="titular.invalid && titular.touched" class="text-danger">
+                El titular es requerido.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="tipo" class="form-label">Tipo de Tarjeta</label>
+              <select
+                class="form-control"
+                id="tipo"
+                [(ngModel)]="tarjeta.tipo"
+                name="tipo"
+                required
+                #tipo="ngModel">
+                <option value="">Seleccione tipo</option>
+                <option value="CREDITO">Crédito</option>
+                <option value="DEBITO">Débito</option>
+              </select>
+              <div *ngIf="tipo.invalid && tipo.touched" class="text-danger">
+                El tipo es requerido.
+              </div>
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg" [disabled]="form.invalid">Guardar Tarjeta</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

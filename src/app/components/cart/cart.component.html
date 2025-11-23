@@ -1,0 +1,34 @@
+<div class="card">
+  <div class="card-header bg-secondary text-white">
+    <h5 class="mb-0">Carrito de Compras</h5>
+  </div>
+  <div class="card-body">
+    <div *ngIf="cartItems.length === 0" class="text-center">
+      <p>El carrito está vacío</p>
+    </div>
+    <div *ngFor="let item of cartItems" class="mb-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h6>{{ item.product.title }}</h6>
+          <p class="mb-1">${{ item.product.price }} x {{ item.quantity }}</p>
+        </div>
+        <div>
+          <input
+            type="number"
+            class="form-control form-control-sm d-inline-block"
+            style="width: 60px;"
+            [value]="item.quantity"
+            (change)="updateQuantity(item.product.id, +$any($event.target).value)"
+            min="1"
+          >
+          <button class="btn btn-sm btn-danger ms-2" (click)="removeItem(item.product.id)">X</button>
+        </div>
+      </div>
+    </div>
+    <hr *ngIf="cartItems.length > 0">
+    <div *ngIf="cartItems.length > 0" class="d-flex justify-content-between align-items-center">
+      <strong>Total: ${{ total.toFixed(2) }}</strong>
+      <button class="btn btn-success" (click)="checkout()">Pagar</button>
+    </div>
+  </div>
+</div>
