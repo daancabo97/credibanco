@@ -10,4 +10,5 @@ export class TarjetaService {
   constructor(private http: HttpClient) {}
   getAll(): Observable<Tarjeta[]> { return this.http.get<Tarjeta[]>(this.baseUrl); }
   create(tarjeta: Tarjeta): Observable<Tarjeta> { return this.http.post<Tarjeta>(this.baseUrl, tarjeta); }
+  recargar(id: number, monto: number): Observable<Tarjeta> { return this.http.post<Tarjeta>(`${this.baseUrl}/${id}/recargar`, { monto }); }
 }

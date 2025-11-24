@@ -11,4 +11,5 @@ export class TransaccionService {
   getAll(): Observable<Transaccion[]> { return this.http.get<Transaccion[]>(this.baseUrl); }
   create(tx: Transaccion): Observable<Transaccion> { return this.http.post<Transaccion>(this.baseUrl, tx); }
   compra(compraData: any): Observable<any> { return this.http.post(`${this.baseUrl}/compra`, compraData); }
+  anular(id: number): Observable<any> { return this.http.post(`${this.baseUrl}/${id}/anular`, {}); }
 }

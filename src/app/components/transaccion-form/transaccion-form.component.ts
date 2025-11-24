@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class TransaccionFormComponent {
   // Usamos la interfaz para asegurar que el objeto tiene la forma correcta
-  tx: Transaccion = { id: 0, tarjetaId: 0, monto: 0, descripcion: '' };
+  tx: Transaccion = { id: 0, tarjetaId: 0, monto: 0, descripcion: '', estado: 'EXITOSA', fecha: new Date().toISOString() };
   constructor(private service: TransaccionService, private router: Router) {}
   guardar() {
     const { id, ...data } = this.tx;

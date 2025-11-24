@@ -7,7 +7,7 @@ import type { Product } from '../models/product.model';
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'https://fakestoreapi.com/products';
+  private apiUrl = '/api/products';
 
   constructor(private http: HttpClient) {}
 
@@ -20,6 +20,6 @@ export class ProductService {
   }
 
   searchByTitle(title: string): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}?title=${title}`);
+    return this.http.get<Product[]>(`${this.apiUrl}/search?title=${title}`);
   }
 }

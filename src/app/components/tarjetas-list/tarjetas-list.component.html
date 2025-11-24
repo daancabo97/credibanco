@@ -12,6 +12,10 @@
                 <th>ID</th>
                 <th>Número de Tarjeta</th>
                 <th>Titular</th>
+                <th>Tipo</th>
+                <th>Fecha Vencimiento</th>
+                <th>Saldo</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -19,6 +23,10 @@
                 <td>{{ tarjeta.id }}</td>
                 <td>{{ tarjeta.numero }}</td>
                 <td>{{ tarjeta.titular }}</td>
+                <td>{{ tarjeta.tipo }}</td>
+                <td>{{ tarjeta.fechaVencimiento }}</td>
+                <td>{{ tarjeta.saldo }}</td>
+                <td><button (click)="recargar(tarjeta)" class="btn btn-warning btn-sm">Recargar</button></td>
               </tr>
             </tbody>
           </table>

@@ -13,6 +13,9 @@
                 <th>ID de Tarjeta</th>
                 <th>Monto</th>
                 <th>Descripción</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -21,6 +24,9 @@
                 <td>{{ tx.tarjetaId }}</td>
                 <td>${{ tx.monto }}</td>
                 <td>{{ tx.descripcion }}</td>
+                <td>{{ tx.estado }}</td>
+                <td>{{ tx.fecha }}</td>
+                <td><button (click)="anular(tx)" class="btn btn-danger btn-sm" *ngIf="tx.estado !== 'ANULADA'">Anular</button></td>
               </tr>
             </tbody>
           </table>

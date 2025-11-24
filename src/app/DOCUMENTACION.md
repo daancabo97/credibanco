@@ -13,7 +13,7 @@ Este documento proporciona una descripción general de la arquitectura, estructu
 
 La estructura principal del código fuente se encuentra en la carpeta `src/app`.
 
-```
+
 src/
 └── app/
     ├── components/
@@ -25,7 +25,7 @@ src/
     ├── app-routing.module.ts   # Módulo de enrutamiento principal
     ├── app.component.ts        # Componente raíz de la aplicación
     └── app.module.ts           # Módulo raíz de la aplicación
-```
+
 
 ### Descripción de Carpetas Clave
 
@@ -65,19 +65,18 @@ Sigue estos pasos para configurar y ejecutar el proyecto en un entorno de desarr
 
 - **Node.js y npm**: Asegúrase de tener instalada una versión LTS de Node.js. Puedes descargarlo desde nodejs.org.
 - **Angular CLI**: Instalar la CLI de Angular globalmente con el siguiente comando:
-  ```bash
+  
   npm install -g @angular/cli
-  ```
+  
 
 ### Instalación y Ejecución
 
 1. **Clonar el repositorio** (si aplica) y navegar a la carpeta del proyecto.
 2. **Instalar las dependencias**:
-   ```bash
-   npm install
-   ```
+
+   
 3. **Inicia el servidor de desarrollo**:
-   ```bash
+   
    ng serve -o
-   ```
+   
    El comando `-o` abrirá automáticamente tu navegador en `http://localhost:4200/`. La aplicación se recargará automáticamente si cambias alguno de los archivos fuente.

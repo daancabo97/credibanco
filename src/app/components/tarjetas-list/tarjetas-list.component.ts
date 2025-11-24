@@ -14,4 +14,10 @@ export class TarjetasListComponent implements OnInit {
   constructor(private tarjetaService: TarjetaService) {}
   ngOnInit(): void { this.cargarTarjetas(); }
   cargarTarjetas(): void { this.tarjetaService.getAll().subscribe(data => this.tarjetas = data); }
+  recargar(tarjeta: Tarjeta): void {
+    const monto = prompt('Ingrese el monto a recargar:');
+    if (monto && !isNaN(+monto)) {
+      this.tarjetaService.recargar(tarjeta.id, +monto).subscribe(() => this.cargarTarjetas());
+    }
+  }
 }

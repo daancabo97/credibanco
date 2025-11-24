@@ -22,10 +22,12 @@ export class TarjetaFormComponent {
   }
 
   guardar() {
-    // Set fechaVencimiento to 3 years from now
+    // Set fechaVencimiento to 3 years from now in mm/aaaa format
     const now = new Date();
     now.setFullYear(now.getFullYear() + 3);
-    this.tarjeta.fechaVencimiento = now.toISOString().split('T')[0]; // YYYY-MM-DD
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const year = now.getFullYear().toString();
+    this.tarjeta.fechaVencimiento = `${month}/${year}`;
     this.tarjeta.saldo = 0;
 
     const { id, ...data } = this.tarjeta;

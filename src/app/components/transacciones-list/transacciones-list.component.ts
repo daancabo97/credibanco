@@ -14,4 +14,9 @@ export class TransaccionesListComponent implements OnInit {
   constructor(private txService: TransaccionService) {}
   ngOnInit(): void { this.cargarTransacciones(); }
   cargarTransacciones(): void { this.txService.getAll().subscribe(data => this.transacciones = data); }
+  anular(tx: Transaccion): void {
+    if (confirm('¿Anular esta transacción?')) {
+      this.txService.anular(tx.id).subscribe(() => this.cargarTransacciones());
+    }
+  }
 }
