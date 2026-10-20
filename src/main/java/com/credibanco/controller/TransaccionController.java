@@ -1,12 +1,14 @@
 package com.credibanco.controller;
 
-import com.credibanco.models.Transaccion;
+import com.credibanco.dto.TransaccionRequest;
+import com.credibanco.dto.TransaccionResponse;
+import com.credibanco.mapper.ResponseMapper;
 import com.credibanco.service.TransaccionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -14,8 +16,11 @@ import java.util.List;
 public class TransaccionController {
 
     private final TransaccionService transaccionService;
-    public TransaccionController(TransaccionService transaccionService) {
+    private final ResponseMapper responseMapper;
+
+    public TransaccionController(TransaccionService transaccionService, ResponseMapper responseMapper) {
         this.transaccionService = transaccionService;
+        this.responseMapper = responseMapper;
     }
 
     @PostMapping("/compra")
@@ -24,8 +29,9 @@ public class TransaccionController {
             @ApiResponse(responseCode = "200", description = "Compra registrada exitosamente"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
-    public Transaccion registrarCompra(@RequestParam Long tarjetaId, @RequestParam BigDecimal monto) {
-        return transaccionService.registrarCompra(tarjetaId, monto);
+    public TransaccionResponse registrarCompra(@Valid @RequestBody TransaccionRequest request) {
+        return responseMapper.toTransaccionResponse(
+                transaccionService.registrarCompra(request.getTarjetaId(), request.getMonto()));
     }
 
     @PostMapping("/recarga")
@@ -34,8 +40,9 @@ public class TransaccionController {
             @ApiResponse(responseCode = "200", description = "Recarga registrada exitosamente"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
-    public Transaccion recargar(@RequestParam Long tarjetaId, @RequestParam BigDecimal monto) {
-        return transaccionService.recargar(tarjetaId, monto);
+    public TransaccionResponse recargar(@Valid @RequestBody TransaccionRequest request) {
+        return responseMapper.toTransaccionResponse(
+                transaccionService.recargar(request.getTarjetaId(), request.getMonto()));
     }
 
     @PutMapping("/{id}/anular")
@@ -44,8 +51,8 @@ public class TransaccionController {
             @ApiResponse(responseCode = "200", description = "Transacción anulada exitosamente"),
             @ApiResponse(responseCode = "404", description = "Transacción no encontrada")
     })
-    public Transaccion anularTransaccion(@PathVariable Long id) {
-        return transaccionService.anularTransaccion(id);
+    public TransaccionResponse anularTransaccion(@PathVariable Long id) {
+        return responseMapper.toTransaccionResponse(transaccionService.anularTransaccion(id));
     }
 
     @GetMapping
@@ -53,7 +60,7 @@ public class TransaccionController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Listado de transacciones")
     })
-    public List<Transaccion> listarTransaccionesPorTarjeta(@RequestParam Long tarjetaId) {
-        return transaccionService.listarTransaccionesPorTarjeta(tarjetaId);
+    public List<TransaccionResponse> listarTransaccionesPorTarjeta(@RequestParam Long tarjetaId) {
+        return responseMapper.toTransaccionResponseList(transaccionService.listarTransaccionesPorTarjeta(tarjetaId));
     }
 }

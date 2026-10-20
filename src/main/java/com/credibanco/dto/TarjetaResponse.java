@@ -1,5 +1,7 @@
 package com.credibanco.dto;
 
+import com.credibanco.models.Moneda;
+import com.credibanco.models.TipoTarjeta;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -16,6 +18,7 @@ public class TarjetaResponse {
     private String nombreTitular;
     private LocalDate fechaCreacion;
     private LocalDate fechaVencimiento;
-    private String tipoTarjeta;
+    private TipoTarjeta tipoTarjeta;
     private BigDecimal saldo;
+    private Moneda moneda;
 }

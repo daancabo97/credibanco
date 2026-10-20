@@ -1,5 +1,6 @@
 package com.credibanco.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -33,11 +34,21 @@ public class Tarjeta {
     @Column(name = "fecha_vencimiento", nullable = false)
     private LocalDate fechaVencimiento;
 
-    @Column(name = "tipo_tarjeta", length = 10, nullable = false)
-    private String tipoTarjeta;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_tarjeta", length = 16, nullable = false)
+    private TipoTarjeta tipoTarjeta;
 
     @Column(name = "saldo", nullable = false)
     private BigDecimal saldo = BigDecimal.ZERO;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "moneda", length = 3, nullable = false)
+    private Moneda moneda = Moneda.USD;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id")
+    @JsonIgnore
+    private Usuario usuario;
 
     @OneToMany(mappedBy = "tarjeta")
     @JsonManagedReference

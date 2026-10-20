@@ -1,10 +1,19 @@
 HELP.md
+
+# Compilación y reportes de Maven
 target/
-.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+reports/
+htmlReport/
 
-### STS ###
+# Maven Wrapper: el jar se descarga; se versionan mvnw y maven-wrapper.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# STS / Eclipse
 .apt_generated
 .classpath
 .factorypath
@@ -12,52 +21,14 @@ target/
 .settings
 .springBeans
 .sts4-cache
+bin/
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
-.vscode/
-
-
-
-# Archivos de sistema
-.DS_Store
-Thumbs.db
-
-# Archivos de logs
-*.log
-
-# Archivos de compilación
-target/
-build/
-reports/
-htmlReport/*
-htmlReport/**/*
-
-
-
-# Archivos de configuración de IDE
+# IntelliJ IDEA
 .idea/
+*.iws
 *.iml
 *.ipr
-*.iws
-
-# Maven Wrapper
-.mvn/wrapper/maven-wrapper.jar
+out/
 
 # NetBeans
 /nbproject/private/
@@ -66,11 +37,20 @@ htmlReport/**/*
 /nbdist/
 /.nb-gradle/
 
-# VS Code
+# VS Code y Cursor
 .vscode/
+.cursor/
 
-# Lombok
+# Sistema
+.DS_Store
+Thumbs.db
+*.log
 *.lombok.log
+hs_err_pid*
+replay_pid*
 
-# Archivos de entorno
+# Secretos y configuración local
 .env
+.env.*
+application-local.properties
+src/main/resources/application-dev.properties

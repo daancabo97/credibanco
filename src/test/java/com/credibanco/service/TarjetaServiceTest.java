@@ -1,57 +1,50 @@
 package com.credibanco.service;
 
+import com.credibanco.dto.TarjetaRequest;
+import com.credibanco.models.Moneda;
 import com.credibanco.models.Tarjeta;
-import com.credibanco.repository.TarjetaRepository;
+import com.credibanco.models.TipoTarjeta;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@DataJpaTest
-public class TarjetaServiceTest {
+@SpringBootTest
+class TarjetaServiceTest {
 
     @Autowired
-    private TarjetaRepository tarjetaRepository;
+    private TarjetaService tarjetaService;
 
     @Test
-    public void testCrearTarjeta() {
-        Tarjeta tarjeta = new Tarjeta();
-        tarjeta.setNumeroTarjeta("1234567890123456");
-        tarjeta.setNombreTitular("Daniel Caicedo");
-        tarjeta.setFechaCreacion(LocalDate.now());
-        tarjeta.setFechaVencimiento(LocalDate.of(2058, 11, 1));
-        tarjeta.setTipoTarjeta("credito");
-        // saldo NO se asigna, ya que la clase lo inicializa en cero
+    void crearRecargarYListar() {
+        Tarjeta creada = tarjetaService.crearTarjeta(tarjeta("Maria Garcia", TipoTarjeta.DEBITO));
 
-        Tarjeta saved = tarjetaRepository.save(tarjeta);
+        assertTrue(creada.getNumeroTarjeta().matches(TipoTarjeta.DEBITO.getIdProducto() + "\\d{10}"));
+        assertEquals("Maria Garcia", creada.getNombreTitular());
+        assertEquals(Moneda.USD, creada.getMoneda());
+        assertEquals(0, creada.getSaldo().compareTo(BigDecimal.ZERO));
 
-        // Debe ser cero el saldo siempre que se cree una tarjeta
-        assertNotNull(saved.getId());
-        assertEquals("Daniel Caicedo", saved.getNombreTitular());
-        assertTrue(saved.getSaldo().compareTo(new BigDecimal("0")) == 0);
+        Tarjeta recargada = tarjetaService.recargarSaldo(creada.getId(), new BigDecimal("20000"));
+        assertEquals(0, recargada.getSaldo().compareTo(new BigDecimal("20000")));
+
+        Tarjeta listada = tarjetaService.listarTarjetas().stream()
+                .filter(tarjeta -> tarjeta.getId().equals(creada.getId()))
+                .findFirst()
+                .orElseThrow();
+        assertEquals(0, listada.getSaldo().compareTo(new BigDecimal("20000")));
     }
 
-    @Test
-    public void testRecargarSaldo() {
-        Tarjeta tarjeta = new Tarjeta();
-        tarjeta.setNumeroTarjeta("5555123412341234");
-        tarjeta.setNombreTitular("Maria Garcia");
-        tarjeta.setFechaCreacion(LocalDate.now());
-        tarjeta.setFechaVencimiento(LocalDate.of(2058, 11, 1));
-        tarjeta.setTipoTarjeta("debito");
-
-        Tarjeta saved = tarjetaRepository.save(tarjeta);
-
-        // Simular recarga de saldo
-        saved.setSaldo(saved.getSaldo().add(new java.math.BigDecimal("20000")));
-        tarjetaRepository.save(saved);
-
-        Tarjeta reloaded = tarjetaRepository.findById(saved.getId()).orElse(null);
-        assertTrue(reloaded.getSaldo().compareTo(new BigDecimal("20000")) == 0);
+    private TarjetaRequest tarjeta(String nombreTitular, TipoTarjeta tipoTarjeta) {
+        TarjetaRequest request = new TarjetaRequest();
+        request.setNombreTitular(nombreTitular);
+        request.setFechaCreacion(LocalDate.now());
+        request.setFechaVencimiento(LocalDate.now().plusYears(4));
+        request.setTipoTarjeta(tipoTarjeta);
+        return request;
     }
-
 }

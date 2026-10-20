@@ -24,13 +24,19 @@ public class Transaccion {
     @Column(name = "monto", nullable = false)
     private BigDecimal monto;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "moneda", length = 3, nullable = false)
+    private Moneda moneda = Moneda.USD;
+
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "tipo_movimiento", length = 10, nullable = false)
-    private String tipoMovimiento; // "compra", "recarga"
+    private TipoMovimiento tipoMovimiento;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", length = 10, nullable = false)
-    private String estado; // "exitosa", "pendiente", "anulada"
+    private EstadoTransaccion estado;
 
 }

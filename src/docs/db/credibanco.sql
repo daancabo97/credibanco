@@ -5,12 +5,13 @@ drop table tarjeta;
 
 create table tarjeta (
   id bigserial primary key,
-  numero_tarjeta char(16) unique not null, -- 16 dígitos, 6 primeros producto + aleatorios
-  nombre_titular varchar(100) not null,   -- primer nombre y apellido
+  numero_tarjeta char(16) unique not null
+  nombre_titular varchar(100) not null,
   fecha_creacion date not null,
-  fecha_vencimiento char(6) not null,    -- formato mmaaaa, >= fecha creación + 3 años
-  tipo_tarjeta varchar(10) not null,             -- 'credito' o 'debito'
-  saldo decimal(15, 2) not null default 0 -- saldo en dólares con dos decimales
+  fecha_vencimiento char(6) not null,
+  tipo_tarjeta varchar(10) not null,
+  saldo decimal(15, 2) not null default 0,
+  moneda varchar(3) not null default 'USD' check (moneda = 'USD')
 );
 
 
@@ -18,9 +19,10 @@ create table transaccion (
   id bigserial primary key,
   tarjeta_id bigint not null,
   monto decimal(15, 2) not null,
+  moneda varchar(3) not null default 'USD' check (moneda = 'USD'),
   fecha timestamp not null default current_timestamp,
-  tipo_movimiento varchar(10) not null,  -- 'recarga' o 'compra'
-  estado varchar(10) not null,           -- 'pendiente', 'realizada', 'anulada'
+  tipo_movimiento varchar(10) not null,  -- 'RECARGA' o 'COMPRA'
+  estado varchar(10) not null check (estado in ('EXITOSA', 'RECHAZADA', 'ANULADA')),
 
   constraint fk_tarjeta foreign key (tarjeta_id)
     references tarjeta (id)
@@ -33,16 +35,16 @@ create index idx_transaccion_tarjeta_id on transaccion (tarjeta_id);
 create index idx_transaccion_estado on transaccion (estado);
 
 
-insert into tarjeta (numero_tarjeta, nombre_titular, fecha_creacion, fecha_vencimiento, tipo_tarjeta, saldo) values
-('1234567890123456', 'juan perez', '2025-11-08', '112028', 'credito', 1000000),
-('6543219876543210', 'maria lopez', '2025-11-08', '112028', 'debito', 500000);
+insert into tarjeta (numero_tarjeta, nombre_titular, fecha_creacion, fecha_vencimiento, tipo_tarjeta, saldo, moneda) values
+('1234567890123456', 'juan perez', '2025-11-08', '112028', 'CREDITO', 1000000, 'USD'),
+('6543219876543210', 'maria lopez', '2025-11-08', '112028', 'DEBITO', 500000, 'USD');
 
 
-insert into transaccion (tarjeta_id, monto, fecha, tipo_movimiento, estado) values
-(1, 200000, '2025-11-08 10:00:00', 'recarga', 'realizada'),
-(1, 45000, '2025-11-08 11:00:00', 'compra', 'realizada'),
-(2, 180000, '2025-11-08 12:00:00', 'recarga', 'realizada'),
-(2, 32000, '2025-11-08 13:00:00', 'compra', 'pendiente');
+insert into transaccion (tarjeta_id, monto, moneda, fecha, tipo_movimiento, estado) values
+(1, 200000, 'USD', '2025-11-08 10:00:00', 'RECARGA', 'EXITOSA'),
+(1, 45000, 'USD', '2025-11-08 11:00:00', 'COMPRA', 'EXITOSA'),
+(2, 180000, 'USD', '2025-11-08 12:00:00', 'RECARGA', 'EXITOSA'),
+(2, 32000, 'USD', '2025-11-08 13:00:00', 'COMPRA', 'EXITOSA');
 
 
 select * from tarjeta;

@@ -1,13 +1,15 @@
 package com.credibanco.controller;
 
 import com.credibanco.dto.TarjetaRequest;
-import com.credibanco.models.Tarjeta;
+import com.credibanco.dto.TarjetaResponse;
+import com.credibanco.mapper.ResponseMapper;
 import com.credibanco.service.TarjetaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,9 +20,12 @@ import java.util.List;
 public class TarjetaController {
 
     private final TarjetaService tarjetaService;
+    private final ResponseMapper responseMapper;
 
-    public TarjetaController(TarjetaService tarjetaService) {
-        this.tarjetaService = tarjetaService; }
+    public TarjetaController(TarjetaService tarjetaService, ResponseMapper responseMapper) {
+        this.tarjetaService = tarjetaService;
+        this.responseMapper = responseMapper;
+    }
 
     @PostMapping
     @Operation(summary = "Crea una tarjeta")
@@ -28,8 +33,8 @@ public class TarjetaController {
             @ApiResponse(responseCode = "200", description = "Tarjeta creada exitosamente"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
-    public Tarjeta crearTarjeta(@RequestBody TarjetaRequest tarjetaRequest) {
-        return tarjetaService.crearTarjeta(tarjetaRequest);
+    public TarjetaResponse crearTarjeta(@Valid @RequestBody TarjetaRequest tarjetaRequest) {
+        return responseMapper.toTarjetaCreadaResponse(tarjetaService.crearTarjeta(tarjetaRequest));
     }
 
 
@@ -39,18 +44,18 @@ public class TarjetaController {
             @ApiResponse(responseCode = "200", description = "Saldo recargado exitosamente"),
             @ApiResponse(responseCode = "404", description = "Tarjeta no encontrada")
     })
-    public Tarjeta recargar(
+    public TarjetaResponse recargar(
             @Parameter(description = "ID de la tarjeta") @PathVariable Long id,
             @Parameter(description = "Monto a recargar") @RequestParam BigDecimal monto) {
-        return tarjetaService.recargarSaldo(id, monto);
+        return responseMapper.toTarjetaEnmascarada(tarjetaService.recargarSaldo(id, monto));
     }
 
     @GetMapping
-    @Operation(summary = "Lista todas las tarjetas")
+    @Operation(summary = "Lista las tarjetas del usuario autenticado")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Listado de tarjetas")
     })
-    public List<Tarjeta> listarTarjetas() {
-        return tarjetaService.listarTarjetas();
+    public List<TarjetaResponse> listarTarjetas() {
+        return responseMapper.toTarjetaEnmascarada(tarjetaService.listarTarjetas());
     }
 }

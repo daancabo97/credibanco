@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Credibanco Backend — Guía visual</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap');
+
+    :root {
+      --brand: #0d3b66;
+      --brand-light: #1a5f8a;
+      --accent: #f4a261;
+      --accent2: #2a9d8f;
+      --bg: #f8f9fc;
+      --card: #ffffff;
+      --text: #1a1a2e;
+      --muted: #5c6370;
+      --border: #e2e8f0;
+      --ok: #2d6a4f;
+      --warn: #bc6c25;
+      --bad: #9b2226;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.55;
+      font-size: 11pt;
+    }
+
+    .page {
+      max-width: 210mm;
+      margin: 0 auto;
+      background: white;
+      padding: 18mm 16mm;
+    }
+
+    @media print {
+      body { background: white; }
+      .page { padding: 12mm 14mm; max-width: none; }
+      .no-print { display: none !important; }
+      .page-break { page-break-before: always; }
+      h2 { page-break-after: avoid; }
+      .card, .flow-step, .improve-item { break-inside: avoid; }
+    }
+
+    /* Cover */
+    .cover {
+      min-height: 240mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(145deg, var(--brand) 0%, #16425b 50%, var(--brand-light) 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 40px 32px;
+      margin-bottom: 24px;
+    }
+
+    .cover-icon {
+      width: 88px;
+      height: 88px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+      margin-bottom: 24px;
+    }
+
+    .cover h1 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 32pt;
+      font-weight: 400;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .cover .subtitle {
+      font-size: 14pt;
+      opacity: 0.9;
+      max-width: 420px;
+      margin-bottom: 32px;
+    }
+
+    .cover-meta {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+      font-size: 10pt;
+      opacity: 0.85;
+    }
+
+    .cover-meta span {
+      background: rgba(255,255,255,0.12);
+      padding: 8px 16px;
+      border-radius: 20px;
+    }
+
+    h2 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 20pt;
+      color: var(--brand);
+      margin: 28px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 3px solid var(--accent);
+    }
+
+    h3 {
+      font-size: 12pt;
+      color: var(--brand-light);
+      margin: 18px 0 10px;
+      font-weight: 600;
+    }
+
+    p { margin-bottom: 10px; color: var(--text); }
+    .lead { font-size: 12pt; color: var(--muted); margin-bottom: 16px; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 8px rgba(13,59,102,0.06);
+    }
+
+    .card.highlight {
+      border-left: 5px solid var(--accent2);
+      background: #f0faf8;
+    }
+
+    .card.warn {
+      border-left: 5px solid var(--warn);
+      background: #fffbf5;
+    }
+
+    /* Big analogy diagram */
+    .analogy {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      align-items: center;
+      gap: 8px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .analogy-box {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 12px;
+    }
+
+    .analogy-box.main {
+      border-color: var(--brand);
+      background: linear-gradient(180deg, #eef4fa 0%, white 100%);
+    }
+
+    .analogy-box .icon { font-size: 28px; margin-bottom: 8px; }
+    .analogy-box .label { font-weight: 700; font-size: 10pt; color: var(--brand); }
+    .analogy-box .desc { font-size: 8.5pt; color: var(--muted); margin-top: 4px; }
+
+    .arrow { font-size: 20pt; color: var(--accent); font-weight: bold; }
+
+    /* Layer stack */
+    .layers {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 16px 0;
+    }
+
+    .layer {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      color: white;
+      font-weight: 500;
+    }
+
+    .layer .num {
+      width: 28px;
+      height: 28px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11pt;
+      flex-shrink: 0;
+    }
+
+    .layer .layer-text { flex: 1; }
+    .layer .layer-text strong { display: block; font-size: 11pt; }
+    .layer .layer-text span { font-size: 9pt; opacity: 0.9; font-weight: 400; }
+
+    .layer-1 { background: #457b9d; }
+    .layer-2 { background: var(--brand-light); }
+    .layer-3 { background: var(--brand); }
+    .layer-4 { background: #1d3557; }
+
+    /* Flow horizontal */
+    .flow-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: stretch;
+      margin: 14px 0;
+    }
+
+    .flow-step {
+      flex: 1;
+      min-width: 100px;
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      position: relative;
+    }
+
+    .flow-step .step-num {
+      background: var(--accent);
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      font-size: 10pt;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+    }
+
+    .flow-step .step-title { font-weight: 600; font-size: 9.5pt; color: var(--brand); }
+    .flow-step .step-desc { font-size: 8pt; color: var(--muted); margin-top: 4px; }
+
+    .flow-arrow-inline {
+      display: flex;
+      align-items: center;
+      color: var(--accent);
+      font-size: 18pt;
+      font-weight: bold;
+      padding: 0 2px;
+    }
+
+    /* Operations grid */
+    .ops-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .op-card {
+      border-radius: 10px;
+      padding: 14px;
+      border: 1px solid var(--border);
+    }
+
+    .op-card.tarjetas { background: #eef4fa; border-color: #a8c5e0; }
+    .op-card.transacciones { background: #f5f0fa; border-color: #c5b8d9; }
+
+    .op-card .op-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-weight: 700;
+      color: var(--brand);
+      font-size: 11pt;
+    }
+
+    .op-list { list-style: none; }
+    .op-list li {
+      font-size: 9.5pt;
+      padding: 6px 0;
+      border-bottom: 1px dashed var(--border);
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .op-list li:last-child { border-bottom: none; }
+    .op-badge {
+      background: var(--brand);
+      color: white;
+      font-size: 7pt;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Database visual */
+    .db-visual {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: flex-start;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .db-table {
+      background: white;
+      border: 2px solid var(--brand);
+      border-radius: 10px;
+      min-width: 200px;
+      overflow: hidden;
+    }
+
+    .db-table-header {
+      background: var(--brand);
+      color: white;
+      padding: 10px 14px;
+      font-weight: 700;
+      text-align: center;
+      font-size: 11pt;
+    }
+
+    .db-field {
+      padding: 7px 14px;
+      font-size: 9pt;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .db-field:last-child { border-bottom: none; }
+    .db-field .field-name { font-weight: 500; }
+    .db-field .field-hint { color: var(--muted); font-size: 8pt; }
+
+    .db-link {
+      display: flex;
+      align-items: center;
+      font-size: 9pt;
+      color: var(--muted);
+      padding-top: 40px;
+    }
+
+    /* Rules boxes */
+    .rules-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .rule {
+      background: #f8f9fc;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 9.5pt;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .rule .check { color: var(--ok); font-weight: bold; font-size: 12pt; }
+
+    /* Improvement list */
+    .improve-section { margin-top: 8px; }
+
+    .priority-tag {
+      display: inline-block;
+      font-size: 7.5pt;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .priority-alta { background: #fde8e8; color: var(--bad); }
+    .priority-media { background: #fff3e0; color: var(--warn); }
+    .priority-baja { background: #e8f5e9; color: var(--ok); }
+
+    .improve-item {
+      margin-bottom: 12px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: white;
+    }
+
+    .improve-item h4 {
+      font-size: 10.5pt;
+      color: var(--brand);
+      margin-bottom: 4px;
+    }
+
+    .improve-item p { font-size: 9.5pt; color: var(--muted); margin: 0; }
+
+    .legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 9pt;
+      color: var(--muted);
+      margin-bottom: 16px;
+      padding: 10px 14px;
+      background: #f8f9fc;
+      border-radius: 8px;
+    }
+
+    .legend span { display: flex; align-items: center; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-alta { background: var(--bad); }
+    .dot-media { background: var(--warn); }
+    .dot-baja { background: var(--ok); }
+
+    footer {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 8.5pt;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .scenario {
+      background: linear-gradient(90deg, #fff9f0 0%, white 100%);
+      border: 1px solid #f4d4a8;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin: 12px 0;
+    }
+
+    .scenario-title {
+      font-weight: 700;
+      color: var(--warn);
+      font-size: 10pt;
+      margin-bottom: 8px;
+    }
+
+    .timeline {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .timeline-item {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 8.5pt;
+      text-align: center;
+    }
+
+    .timeline-item.active { border-color: var(--accent2); background: #e8f8f5; font-weight: 600; }
+    .timeline-arrow { color: var(--accent); font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- PORTADA -->
+    <section class="cover">
+      <div class="cover-icon">💳</div>
+      <h1>Credibanco Backend</h1>
+      <p class="subtitle">Guía visual para entender qué hace este sistema, sin necesidad de saber programar</p>
+      <div class="cover-meta">
+        <span>📅 Mayo 2026</span>
+        <span>🏦 Tarjetas y pagos</span>
+        <span>🌐 API en puerto 8083</span>
+      </div>
+    </section>
+
+    <!-- QUÉ ES -->
+    <h2>¿Qué es este proyecto?</h2>
+    <p class="lead">Imagina un <strong>cajero y administrador digital</strong> que vive en un servidor. No tiene pantalla bonita para el usuario final: su trabajo es <strong>recibir pedidos</strong> (desde una app web, un panel de administración o una herramienta de pruebas) y <strong>guardar o consultar información</strong> sobre tarjetas y movimientos de dinero.</p>
+
+    <div class="analogy">
+      <div class="analogy-box">
+        <div class="icon">📱</div>
+        <div class="label">App o panel</div>
+        <div class="desc">Lo que ve el usuario (otro proyecto)</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="analogy-box main">
+        <div class="icon">⚙️</div>
+        <div class="label">Este backend</div>
+        <div class="desc">Procesa reglas y responde</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="analogy-box">
+        <div class="icon">🗄️</div>
+        <div class="label">Base de datos</div>
+        <div class="desc">PostgreSQL — memoria permanente</div>
+      </div>
+    </div>
+
+    <div class="card highlight">
+      <strong>En una frase:</strong> Es el “cerebro detrás de la cortina” que permite crear tarjetas, recargar saldo, registrar compras, anular compras y consultar el historial.
+    </div>
+
+    <!-- CÓMO FUNCIONA -->
+    <div class="page-break"></div>
+    <h2>¿Cómo funciona por dentro? (vista simple)</h2>
+    <p class="lead">Cada pedido recorre capas, como en una empresa: quien atiende al público, quien decide las reglas, y quien archiva en el almacén.</p>
+
+    <div class="layers">
+      <div class="layer layer-1">
+        <div class="num">1</div>
+        <div class="layer-text">
+          <strong>Recepción (Controllers)</strong>
+          <span>Recibe el pedido: “crear tarjeta”, “hacer compra”, etc.</span>
+        </div>
+      </div>
+      <div class="layer layer-2">
+        <div class="num">2</div>
+        <div class="layer-text">
+          <strong>Reglas de negocio (Services)</strong>
+          <span>Valida: ¿tiene 16 dígitos? ¿hay saldo? ¿pasaron menos de 24 h para anular?</span>
+        </div>
+      </div>
+      <div class="layer layer-3">
+        <div class="num">3</div>
+        <div class="layer-text">
+          <strong>Archivo (Repositories + base de datos)</strong>
+          <span>Guarda y busca tarjetas y transacciones en PostgreSQL</span>
+        </div>
+      </div>
+      <div class="layer layer-4">
+        <div class="num">4</div>
+        <div class="layer-text">
+          <strong>Respuesta</strong>
+          <span>Devuelve el resultado al que hizo el pedido (éxito o error)</span>
+        </div>
+      </div>
+    </div>
+
+    <h3>Recorrido de un pedido cualquiera</h3>
+    <div class="flow-row">
+      <div class="flow-step"><div class="step-num">1</div><div class="step-title">Pedido</div><div class="step-desc">App envía solicitud</div></div>
+      <div class="flow-arrow-inline">→</div>
+      <div class="flow-step"><div class="step-num">2</div><div class="step-title">Validar</div><div class="step-desc">¿Datos correctos?</div></div>
+      <div class="flow-arrow-inline">→</div>
+      <div class="flow-step"><div class="step-num">3</div><div class="step-title">Procesar</div><div class="step-desc">Aplicar reglas</div></div>
+      <div class="flow-arrow-inline">→</div>
+      <div class="flow-step"><div class="step-num">4</div><div class="step-title">Guardar</div><div class="step-desc">En la base de datos</div></div>
+      <div class="flow-arrow-inline">→</div>
+      <div class="flow-step"><div class="step-num">5</div><div class="step-title">Responder</div><div class="step-desc">Confirmación o error</div></div>
+    </div>
+
+    <!-- QUÉ PUEDE HACER -->
+    <div class="page-break"></div>
+    <h2>¿Qué puede hacer el sistema?</h2>
+    <p class="lead">Todo se organiza en dos grandes bloques: <strong>Tarjetas</strong> (la “cuenta plástica digital”) y <strong>Transacciones</strong> (cada movimiento de dinero).</p>
+
+    <div class="ops-grid">
+      <div class="op-card tarjetas">
+        <div class="op-header">💳 Tarjetas</div>
+        <ul class="op-list">
+          <li><span class="op-badge">CREAR</span> Registrar una tarjeta nueva con titular, tipo (crédito/débito) y saldo en cero</li>
+          <li><span class="op-badge">RECARGAR</span> Sumar dinero al saldo de una tarjeta existente</li>
+          <li><span class="op-badge">CONSULTAR</span> Ver listado de todas las tarjetas y su saldo actual</li>
+        </ul>
+      </div>
+      <div class="op-card transacciones">
+        <div class="op-header">📋 Transacciones (movimientos)</div>
+        <ul class="op-list">
+          <li><span class="op-badge">RECARGA</span> Dejar constancia cuando se agrega saldo</li>
+          <li><span class="op-badge">COMPRA</span> Registrar un pago; en débito descuenta del saldo</li>
+          <li><span class="op-badge">ANULAR</span> Devolver una compra si fue hace menos de 24 horas</li>
+          <li><span class="op-badge">HISTORIAL</span> Ver todos los movimientos de una tarjeta</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ESCENARIO EJEMPLO -->
+    <h3>Ejemplo visual: un día con la tarjeta de Juan</h3>
+    <div class="scenario">
+      <div class="scenario-title">📖 Historia de Juan (tarjeta débito)</div>
+      <div class="timeline">
+        <div class="timeline-item active">1. Crean su tarjeta<br><small>Saldo: $0</small></div>
+        <span class="timeline-arrow">→</span>
+        <div class="timeline-item active">2. Recarga $50.000<br><small>Saldo: $50.000</small></div>
+        <span class="timeline-arrow">→</span>
+        <div class="timeline-item active">3. Compra $10.000<br><small>Saldo: $40.000</small></div>
+        <span class="timeline-arrow">→</span>
+        <div class="timeline-item">4. Anula la compra<br><small>Saldo vuelve: $50.000</small></div>
+      </div>
+      <p style="margin-top:10px; font-size:9pt; color:var(--muted);">Cada paso queda registrado como una transacción en el historial.</p>
+    </div>
+
+    <!-- REGLAS -->
+    <h2>Reglas importantes que aplica el sistema</h2>
+    <div class="rules-grid">
+      <div class="rule"><span class="check">✓</span> El número de tarjeta debe tener exactamente 16 dígitos</div>
+      <div class="rule"><span class="check">✓</span> La fecha de vencimiento debe ser al menos 3 años después de hoy</div>
+      <div class="rule"><span class="check">✓</span> Al crear una tarjeta, el saldo empieza en cero</div>
+      <div class="rule"><span class="check">✓</span> Tarjeta de débito: no puede comprar si no hay saldo suficiente</div>
+      <div class="rule"><span class="check">✓</span> Tarjeta de crédito: las compras no descuentan saldo (en el código actual)</div>
+      <div class="rule"><span class="check">✓</span> Solo se pueden anular compras exitosas, dentro de las primeras 24 horas</div>
+    </div>
+
+    <!-- BASE DE DATOS -->
+    <div class="page-break"></div>
+    <h2>¿Qué información guarda?</h2>
+    <p class="lead">Todo vive en una base de datos llamada <strong>credibanco</strong>, con dos “carpetas” principales:</p>
+
+    <div class="db-visual">
+      <div class="db-table">
+        <div class="db-table-header">📇 TARJETA</div>
+        <div class="db-field"><span class="field-name">Número (16 dígitos)</span></div>
+        <div class="db-field"><span class="field-name">Nombre del titular</span></div>
+        <div class="db-field"><span class="field-name">Fechas creación / vencimiento</span></div>
+        <div class="db-field"><span class="field-name">Tipo</span><span class="field-hint">crédito o débito</span></div>
+        <div class="db-field"><span class="field-name">Saldo</span><span class="field-hint">en dólares</span></div>
+      </div>
+      <div class="db-link">Una tarjeta tiene<br>muchas ↓</div>
+      <div class="db-table">
+        <div class="db-table-header">🧾 TRANSACCIÓN</div>
+        <div class="db-field"><span class="field-name">Monto</span></div>
+        <div class="db-field"><span class="field-name">Fecha y hora</span></div>
+        <div class="db-field"><span class="field-name">Tipo</span><span class="field-hint">recarga o compra</span></div>
+        <div class="db-field"><span class="field-name">Estado</span><span class="field-hint">exitosa, anulada…</span></div>
+        <div class="db-field"><span class="field-name">Tarjeta asociada</span></div>
+      </div>
+    </div>
+
+    <div class="card warn">
+      <strong>⚠️ Nota para quien mantenga el proyecto:</strong> El archivo SQL del repositorio y el programa Java usan nombres de estados ligeramente distintos. Conviene unificarlos para evitar confusiones.
+    </div>
+
+    <!-- HERRAMIENTAS -->
+    <h2>Herramientas que acompañan al proyecto</h2>
+    <div class="rules-grid">
+      <div class="rule"><span class="check">📖</span> <strong>Swagger</strong> — Página web para probar el sistema sin programar (localhost:8083/swagger-ui)</div>
+      <div class="rule"><span class="check">📄</span> <strong>documentacion.md</strong> — Guía técnica en el repositorio</div>
+      <div class="rule"><span class="check">🧪</span> <strong>Pruebas automáticas</strong> — Verifican que crear, comprar y anular funcionen</div>
+      <div class="rule"><span class="check">🌐</span> <strong>CORS</strong> — Permite que una app web en otro sitio se conecte al backend</div>
+    </div>
+
+    <!-- MEJORAS -->
+    <div class="page-break"></div>
+    <h2>Lista de mejoras recomendadas</h2>
+    <p class="lead">Ordenadas por importancia. Los términos técnicos van acompañados de una explicación en lenguaje claro.</p>
+
+    <div class="legend">
+      <span><span class="dot dot-alta"></span> Prioridad alta — corregir pronto</span>
+      <span><span class="dot dot-media"></span> Prioridad media — calidad y orden</span>
+      <span><span class="dot dot-baja"></span> Prioridad baja — cuando el proyecto crezca</span>
+    </div>
+
+    <div class="improve-section">
+      <div class="improve-item">
+        <span class="priority-tag priority-alta">Prioridad alta</span>
+        <h4>1. Unificar la recarga en un solo camino</h4>
+        <p>Hoy existen dos formas de recargar (desde “tarjetas” y desde “transacciones”). Eso confunde y puede duplicar registros. Debe quedar una sola forma oficial.</p>
+      </div>
+      <div class="improve-item">
+        <span class="priority-tag priority-alta">Prioridad alta</span>
+        <h4>2. Mensajes de error claros para quien consume la API</h4>
+        <p>Cuando algo falla (tarjeta no existe, saldo insuficiente), la respuesta debería ser siempre un mensaje entendible con código 400/404, no un error genérico del servidor.</p>
+      </div>
+      <div class="improve-item">
+        <span class="priority-tag priority-alta">Prioridad alta</span>
+        <h4>3. Alinear documentación, base de datos y programa</h4>
+        <p>Los mismos nombres de estados (exitosa vs realizada), formatos de fecha y rutas de la API deben coincidir en todos lados.</p>
+      </div>
+      <div class="improve-item">
+        <span class="priority-tag priority-alta">Prioridad alta</span>
+        <h4>4. Proteger la contraseña de la base de datos</h4>
+        <p>No dejar usuario y clave visibles en archivos del proyecto. Usar variables de entorno o archivos locales que no se suban a Git.</p>
+      </div>
+      <div class="improve-item">
+        <span class="priority-tag priority-alta">Prioridad alta</span>
+        <h4>5. No exponer la estructura interna en las respuestas</h4>
+        <p>La API debería devolver “vistas simplificadas” (DTOs), no el modelo completo de la base de datos, para mayor seguridad y claridad.</p>
+      </div>
+
+      <div class="improve-item">
+        <span class="priority-tag priority-media">Prioridad media</span>
+        <h4>6. Validación automática de formularios</h4>
+        <p>Rechazar datos vacíos o montos negativos antes de entrar a la lógica de negocio, con mensajes estándar.</p>
+      </div>
+      <div class="improve-item">
+        <span class="priority-tag priority-media">Prioridad media</span>
+        <h4>7. Usar listas cerradas en lugar de texto libre</h4>
+        <p>Tipo de tarjeta, tipo de movimiento y estado deberían ser opciones fijas (enum), no palabras escritas a mano que pueden tener errores de tipeo.</p>
+      </div>
+      <div class="improve-item">
+        <span class="priority-tag priority-media">Prioridad media</span>
+        <h4>8. Registrar compras rechazadas</h4>
+        <p>La documentación dice que una compra puede quedar “rechazada”; hoy solo lanza error. Conviene guardar el intento fallido en el historial.</p>
+      </div>
+      <div class="improve-item">
+        <span class="priority-tag priority-media">Prioridad media</span>
+        <h4>9. Mejorar las pruebas</h4>
+        <p>Algunos tests no prueban el servicio real o usan datos de ejemplo incorrectos. Reforzar pruebas de reglas de negocio (16 dígitos, 24 h, saldo).</p>
+      </div>
+      <div class="improve-item">
+        <span class="priority-tag priority-media">Prioridad media</span>
+        <h4>10. README visible en la raíz del proyecto</h4>
+        <p>Un archivo de bienvenida con “qué es”, “cómo arrancar” y enlace a esta guía, para quien abra el repositorio por primera vez.</p>
+      </div>
+      <div class="improve-item">
+        <span class="priority-tag priority-media">Prioridad media</span>
+        <h4>11. Migraciones versionadas de base de datos</h4>
+        <p>Herramientas como Flyway permiten evolucionar el esquema sin scripts manuales sueltos.</p>
+      </div>
+
+      <div class="improve-item">
+        <span class="priority-tag priority-baja">Prioridad baja</span>
+        <h4>12. Seguridad y usuarios</h4>
+        <p>Login, tokens o API keys para que no cualquiera pueda crear tarjetas o mover dinero.</p>
+      </div>
+      <div class="improve-item">
+        <span class="priority-tag priority-baja">Prioridad baja</span>
+        <h4>13. Evitar doble cobro en compras repetidas</h4>
+        <p>Idempotencia: si el mismo pedido llega dos veces por error de red, no debe descontar dos veces.</p>
+      </div>
+      <div class="improve-item">
+        <span class="priority-tag priority-baja">Prioridad baja</span>
+        <h4>14. Pipeline de integración continua (CI)</h4>
+        <p>Que cada cambio en Git ejecute automáticamente las pruebas.</p>
+      </div>
+      <div class="improve-item">
+        <span class="priority-tag priority-baja">Prioridad baja</span>
+        <h4>15. Monitoreo y logs</h4>
+        <p>Para detectar fallos en producción: salud del servidor, tiempos de respuesta, errores frecuentes.</p>
+      </div>
+    </div>
+
+    <!-- RESUMEN -->
+    <h2>Resumen ejecutivo</h2>
+    <div class="card highlight">
+      <p><strong>Credibanco Backend</strong> es un servicio que gestiona tarjetas virtuales y sus movimientos de dinero. Recibe pedidos por internet, aplica reglas de negocio, guarda todo en PostgreSQL y responde a aplicaciones externas. Está bien estructurado para un proyecto de curso o MVP; las mejoras listadas lo acercan a un producto más profesional, seguro y fácil de mantener.</p>
+    </div>
+
+    <footer>
+      Documento generado para el repositorio CredibancoBackend · Guía visual no técnica · Mayo 2026<br>
+      Archivo fuente: docs/guia-visual-credibanco.html · Para actualizar el PDF, volver a exportar desde este HTML
+    </footer>
+
+  </div>
+</body>
+</html>
